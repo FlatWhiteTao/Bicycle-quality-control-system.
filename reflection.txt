@@ -1,0 +1,19 @@
+Reflection 
+
+The main challenges of this assignment are to handle the concurrence issues and communication between components. While the way to resolve them effectively, based on my problem solving process, is to identify the “Shared Resource” at very beginning, and apply synchronized implementation principles to those shared resource. 
+
+Solution 1
+
+In the first solution, the shared resource are the robot and segment 3, and the resource competition occurs between the belt and inspector. Thus, synchronized implementation principles should be applied on, such as using key words synchronized to modify methods of the robot. However, it is not an ideal solution which will trigger the deadlock in the scenario when the inspector wants to occupy the robot to send back the inspected bicycle, while at the same time there is tagged bicycle on the segment 3 that needs to be delivered to the inspector. In order to unlock this deadlock, an feasible solution will be adding an buffer on the inspector side (Not Implemented). 
+
+The deadlock is unavoidable in the solution one though, some decision-makings can elevate the overall performance. For example, the robot should pick tagged bicycle on the segment 3 whenever it is free. If the robot always waits for the inspector to be free first, then the system loses its ability to keep transferring good bicycles. In other words, the robot should be considered as a temporary buffer. 
+
+Solution 2
+
+In the second solution, the shared resource are the robot and consumer, the robot competition occurs between the main belt and inspector, while the consumer competition exits on the main belt and shorter belt. The approaches to handle the concurrency issues for consumer and robot are similar, mainly by using synchronized methods and semaphores. 
+
+To avoid the deadlock, the inspector has a higher priority to the robot. That is, even if the main belt has a tagged bicycle and wants to occupy the robot, the robot can not be occupied immediately before getting a confirmation message that the inspector is empty. If the inspector is not empty then the robot must wait and deliver the inspected bicycle to the shorter belt first.
+
+Communications between components in both solutions 
+
+Another important aspect of concurrency problem is the communications of the whole system. Considering this project is not that complex and the communication could be managed relatively easily, however, with the growth of the complexity of the project, such as the number of components or the number of shared resource, the communication will be extremely important but hard to manage. Therefore, in a large system, a main coordinator that manages messages from each component will be essential, but the trade off will be the lose of the performance. 
